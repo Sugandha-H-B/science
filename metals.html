@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Metals and Non-Metals</title>
+  <link rel="stylesheet" href="metals.css">
+  <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    text-align: center;
+    padding: 30px;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+  }
+  
+  .intro-text {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .buttons {
+    margin: 20px 0;
+  }
+  
+  .button {
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 1.2em;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .elements-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .element-card {
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .element-card:hover {
+    background-color: #e0f7fa;
+  }
+  
+  .element-symbol {
+    font-size: 2em;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .properties-container {
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 700px;
+    display: none;
+    text-align: left;
+  }
+  
+  .properties-container h2 {
+    color: #007bff;
+  }
+  
+  p {
+    font-size: 1em;
+    margin: 10px 0;
+  }
+  
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Interactive Metals and Non-Metals</h1>
+    <p class="intro-text">Discover the fascinating world of elements. Click below to explore the properties of metals and non-metals!</p>
+
+    <div class="buttons">
+      <button id="show-metals" class="button">Explore Metals</button>
+      <button id="show-nonmetals" class="button">Explore Non-Metals</button>
+    </div>
+
+    <div id="elements-container" class="elements-container"></div>
+
+    <div id="properties-container" class="properties-container">
+      <h2>Properties of <span id="element-name"></span></h2>
+      <p><strong>Description:</strong> <span id="description"></span></p>
+      <p><strong>Conductivity:</strong> <span id="conductivity"></span></p>
+      <p><strong>Malleability:</strong> <span id="malleability"></span></p>
+      <p><strong>Ductility:</strong> <span id="ductility"></span></p>
+      <p><strong>Sonorous:</strong> <span id="sonorous"></span></p>
+      <p><strong>Hardness:</strong> <span id="hardness"></span></p>
+      <p><strong>Reactivity:</strong> <span id="reactivity"></span></p>
+      <p><strong>Appearance:</strong> <span id="appearance"></span></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const elementsContainer = document.getElementById("elements-container");
+    const propertiesContainer = document.getElementById("properties-container");
+    const elementNameDisplay = document.getElementById("element-name");
+    const descriptionDisplay = document.getElementById("description");
+    const conductivityDisplay = document.getElementById("conductivity");
+    const malleabilityDisplay = document.getElementById("malleability");
+    const ductilityDisplay = document.getElementById("ductility");
+    const sonorousDisplay = document.getElementById("sonorous");
+    const hardnessDisplay = document.getElementById("hardness");
+    const reactivityDisplay = document.getElementById("reactivity");
+    const appearanceDisplay = document.getElementById("appearance");
+  
+    const showMetalsBtn = document.getElementById("show-metals");
+    const showNonMetalsBtn = document.getElementById("show-nonmetals");
+  
+    const metals = [
+      { symbol: "Fe", name: "Iron", description: "Used in tools and construction.", properties: '{"conductivity": "High", "malleability": "Yes", "ductility": "Yes", "sonorous": "Yes", "hardness": "Hard", "reactivity": "Medium", "appearance": "Shiny"}' },
+      { symbol: "Cu", name: "Copper", description: "Used in electrical wiring.", properties: '{"conductivity": "Very High", "malleability": "Yes", "ductility": "Yes", "sonorous": "Yes", "hardness": "Medium", "reactivity": "Low", "appearance": "Reddish-Brown"}' },
+      { symbol: "Au", name: "Gold", description: "Highly valued for jewelry.", properties: '{"conductivity": "High", "malleability": "Yes", "ductility": "Yes", "sonorous": "Yes", "hardness": "Soft", "reactivity": "Low", "appearance": "Yellowish"}' },
+      { symbol: "Ag", name: "Silver", description: "Used in coins and electronics.", properties: '{"conductivity": "Very High", "malleability": "Yes", "ductility": "Yes", "sonorous": "Yes", "hardness": "Medium", "reactivity": "Low", "appearance": "Silvery-White"}' },
+      { symbol: "Zn", name: "Zinc", description: "Used in galvanizing metals.", properties: '{"conductivity": "Medium", "malleability": "Yes", "ductility": "No", "sonorous": "No", "hardness": "Hard", "reactivity": "Medium", "appearance": "Bluish-White"}' },
+      { symbol: "Al", name: "Aluminum", description: "Lightweight and used in packaging.", properties: '{"conductivity": "High", "malleability": "Yes", "ductility": "Yes", "sonorous": "No", "hardness": "Soft", "reactivity": "High", "appearance": "Silvery"}' },
+      { symbol: "Pb", name: "Lead", description: "Used in batteries.", properties: '{"conductivity": "Low", "malleability": "Yes", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "Low", "appearance": "Grey"}' }
+    ];
+  
+    const nonMetals = [
+      { symbol: "O", name: "Oxygen", description: "Supports life and combustion.", properties: '{"conductivity": "None", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "High", "appearance": "Colorless gas"}' },
+      { symbol: "H", name: "Hydrogen", description: "Abundant in the universe.", properties: '{"conductivity": "Low", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "High", "appearance": "Colorless gas"}' },
+      { symbol: "N", name: "Nitrogen", description: "Major part of the atmosphere.", properties: '{"conductivity": "Low", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "Low", "appearance": "Colorless gas"}' },
+      { symbol: "C", name: "Carbon", description: "Basis of organic life.", properties: '{"conductivity": "Low", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Medium", "reactivity": "Medium", "appearance": "Black solid"}' },
+      { symbol: "S", name: "Sulfur", description: "Used in matches and fireworks.", properties: '{"conductivity": "Low", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Brittle", "reactivity": "Medium", "appearance": "Yellow solid"}' },
+      { symbol: "P", name: "Phosphorus", description: "Used in fertilizers.", properties: '{"conductivity": "None", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "High", "appearance": "White/Red solid"}' },
+      { symbol: "Cl", name: "Chlorine", description: "Used in water purification.", properties: '{"conductivity": "Low", "malleability": "No", "ductility": "No", "sonorous": "No", "hardness": "Soft", "reactivity": "High", "appearance": "Greenish gas"}' }
+    ];
+  
+    function displayElements(elements) {
+      elementsContainer.innerHTML = "";
+      elements.forEach(element => {
+        const card = document.createElement("div");
+        card.classList.add("element-card");
+        card.innerHTML =` <div class="element-symbol">${element.symbol}</div><div>${element.name}</div>`;
+        card.addEventListener("click", () => displayProperties(element));
+        elementsContainer.appendChild(card);
+      });
+    }
+  
+    function displayProperties(element) {
+      const properties = JSON.parse(element.properties);
+      elementNameDisplay.textContent = element.name;
+      descriptionDisplay.textContent = element.description;
+      conductivityDisplay.textContent = properties.conductivity;
+      malleabilityDisplay.textContent = properties.malleability;
+      ductilityDisplay.textContent = properties.ductility;
+      sonorousDisplay.textContent = properties.sonorous;
+      hardnessDisplay.textContent = properties.hardness;
+      reactivityDisplay.textContent = properties.reactivity;
+      appearanceDisplay.textContent = properties.appearance;
+      propertiesContainer.style.display = "block";
+    }
+  
+    showMetalsBtn.addEventListener("click", () => displayElements(metals));
+    showNonMetalsBtn.addEventListener("click", () => displayElements(nonMetals));
+  });
+  
+  </script>
+</body>
+</html>

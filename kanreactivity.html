@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ಧಾತುಗಳ ಪ್ರತಿಕ್ರಿಯಾಶೀಲತೆ ಅನುಸಂಧಾನ</title>
+    <style>
+        /* ಸಾಮಾನ್ಯ ಶೈಲಿ */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #80deea);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0288d1;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #drag-container, #drop-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metal {
+            background: #ff9800;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: grab;
+            font-weight: bold;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .metal:hover {
+            background-color: #e65100;
+            transform: scale(1.1);
+        }
+
+        .drop-zone {
+            border: 3px dashed #bbb;
+            padding: 20px;
+            width: 180px;
+            height: 60px;
+            display: inline-block;
+            border-radius: 8px;
+            background: #ffffffc2;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-zone.incorrect {
+            background-color: #ffcdd2;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 30px;
+            background-color: #0288d1;
+            color: white;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ಧಾತುಗಳ ಪ್ರತಿಕ್ರಿಯಾಶೀಲತೆ ಅನುಸಂಧಾನ</h1>
+        <p>ಕೆಳಗಿನ ಕೋಷ್ಟಕದಲ್ಲಿ ಧಾತುಗಳನ್ನು ಹೆಚ್ಚುತ್ತಿರುವ ಪ್ರತಿಕ್ರಿಯಾಶೀಲತೆಯ ಕ್ರಮದಲ್ಲಿ ಜೋಡಿಸಿ.</p>
+    </header>
+
+    <main>
+        <section id="drag-container">
+            <div class="metal" draggable="true" id="Cu" aria-label="ತಾಮ್ರ">ತಾಮ್ರ (Cu)</div>
+            <div class="metal" draggable="true" id="Fe" aria-label="ಇಕ್ಕಟ್ಟು">ಇಕ್ಕಟ್ಟು (Fe)</div>
+            <div class="metal" draggable="true" id="Zn" aria-label="ಜಿಂಕ್">ಜಿಂಕ್ (Zn)</div>
+            <div class="metal" draggable="true" id="Mg" aria-label="ಮ್ಯಾಗ್ನೇಶಿಯಮ್">ಮ್ಯಾಗ್ನೇಶಿಯಮ್ (Mg)</div>
+            <div class="metal" draggable="true" id="Na" aria-label="ಸೋಡಿಯಂ">ಸೋಡಿಯಂ (Na)</div>
+            <div class="metal" draggable="true" id="Al" aria-label="ಅಲ್ಯೂಮಿನಿಯಂ">ಅಲ್ಯೂಮಿನಿಯಂ (Al)</div>
+            <div class="metal" draggable="true" id="K" aria-label="ಪೋಟ್ಯಾಸಿಯಮ್">ಪೋಟ್ಯಾಸಿಯಮ್ (K)</div>
+            <div class="metal" draggable="true" id="Ca" aria-label="ಕ್ಯಾಲ್ಸಿಯಂ">ಕ್ಯಾಲ್ಸಿಯಂ (Ca)</div>
+            <div class="metal" draggable="true" id="Pb" aria-label="ಸೀಸ">ಸೀಸ (Pb)</div>
+            <div class="metal" draggable="true" id="Sn" aria-label="ತುಪ್ಪಳ">ತುಪ್ಪಳ (Sn)</div>
+            <div class="metal" draggable="true" id="Hg" aria-label="ಪಾರಾ">ಪಾರಾ (Hg)</div>
+            <div class="metal" draggable="true" id="Au" aria-label="ಚಿನ್ನ">ಚಿನ್ನ (Au)</div>
+            <div class="metal" draggable="true" id="Ag" aria-label="ಬೆಳ್ಳಿ">ಬೆಳ್ಳಿ (Ag)</div>
+        </section>
+
+        <section id="drop-container">
+            <h2>ಹೆಚ್ಚುತ್ತಿರುವ ಕ್ರಮದಲ್ಲಿ ಹಾಕಿ:</h2>
+            <div class="drop-zone" id="slot1">೧</div>
+            <div class="drop-zone" id="slot2">೨</div>
+            <div class="drop-zone" id="slot3">೩</div>
+            <div class="drop-zone" id="slot4">೪</div>
+            <div class="drop-zone" id="slot5">೫</div>
+            <div class="drop-zone" id="slot6">೬</div>
+            <div class="drop-zone" id="slot7">೭</div>
+            <div class="drop-zone" id="slot8">೮</div>
+            <div class="drop-zone" id="slot9">೯</div>
+            <div class="drop-zone" id="slot10">೧೦</div>
+            <div class="drop-zone" id="slot11">೧೧</div>
+            <div class="drop-zone" id="slot12">೧೨</div>
+            <div class="drop-zone" id="slot13">೧೩</div>
+        </section>
+
+        <button onclick="checkOrder()">ಪರೀಕ್ಷಿಸಿ</button>
+        <button onclick="resetSimulation()">ಮರುಹೊಂದಿಸಿ</button>
+        <p id="result"></p>
+    </main>
+
+    <footer>
+        <h3>"ಅಭ್ಯಾಸವೇ ಮನುಷ್ಯನನ್ನು ಪರಿಪೂರ್ಣನಾಗಿಸುತ್ತದೆ"</h3>
+    </footer>
+
+    <script>
+        const correctOrder = ["Au", "Ag", "Hg", "Cu", "Pb", "Sn", "Fe", "Zn", "Al", "Mg", "Ca", "Na", "K"];
+        let draggedElement = null;
+        let originalParent = null;
+
+        document.querySelectorAll(".metal").forEach(metal => {
+            metal.addEventListener("dragstart", (e) => {
+                draggedElement = e.target;
+                originalParent = draggedElement.parentElement;
+                draggedElement.classList.add("dragging");
+            });
+
+            metal.addEventListener("dragend", () => {
+                draggedElement.classList.remove("dragging");
+            });
+        });
+
+        document.querySelectorAll(".drop-zone").forEach(zone => {
+            zone.addEventListener("dragover", (e) => e.preventDefault());
+
+            zone.addEventListener("drop", (e) => {
+                if (!zone.contains(draggedElement)) {
+                    const existingElement = zone.firstChild;
+                    if (existingElement) {
+                        originalParent.appendChild(existingElement);
+                    }
+                    zone.appendChild(draggedElement);
+                }
+            });
+        });
+
+        function checkOrder() {
+            const slots = Array.from(document.querySelectorAll(".drop-zone"));
+            const userOrder = slots.map(slot => slot.firstChild?.id || null);
+            document.getElementById("result").textContent = JSON.stringify(userOrder) === JSON.stringify(correctOrder) ? 
+                "ಸರಿಯಾಗಿದೆಯು! ಧಾತುಗಳನ್ನು ಸರಿಯಾಗಿ ಜೋಡಿಸಿದ್ದೀರಿ." : 
+                "ತಪ್ಪಾಗಿದೆ! ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.";
+        }
+
+        function resetSimulation() {
+            document.querySelectorAll(".drop-zone").forEach(zone => {
+                if (zone.firstChild) {
+                    document.getElementById("drag-container").appendChild(zone.firstChild);
+                }
+            });
+            document.getElementById("result").textContent = "";
+        }
+    </script>
+</body>
+</html>

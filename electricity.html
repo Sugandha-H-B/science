@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Electricity Simulation</title>
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    
+    h1 {
+        color: #4cb477;
+        padding: 20px;
+    }
+    
+    .intro {
+        margin: 20px;
+        font-size: 18px;
+        color: #333;
+        background-color: #e0e0e0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        margin: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .simulation-card {
+        width: 300px;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    input[type="number"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    
+    button {
+        background-color: #4cb477;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    
+    button:hover {
+        background-color: #388e3c;
+    }
+    
+    #result {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #4cb477;
+    }
+    
+    #result-text {
+        font-size: 22px;
+        font-weight: bold;
+    }
+    
+    #circuit-container {
+        margin-top: 20px;
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <h1>Interactive Electricity Simulation</h1>
+    
+    <div class="intro">
+        <p>Welcome to the Interactive Electricity Simulation! In this simulation, you can calculate the missing value between Voltage (V), Current (I), and Resistance (R) based on Ohm's Law:</p>
+        <p><strong>Ohm's Law:</strong> <em>V = I * R</em></p>
+        <p>Enter any two values and the third will be calculated for you. You can also view a simple circuit diagram to help visualize the components.</p>
+    </div>
+
+    <div class="container">
+        <div class="simulation-card">
+            <h2>Ohm's Law Calculator</h2>
+            <p>Enter any two values to calculate the third:</p>
+            <form id="ohms-law-form">
+                <label for="voltage">Voltage (V):</label>
+                <input type="number" id="voltage" placeholder="Enter Voltage (V)">
+                
+                <label for="current">Current (I):</label>
+                <input type="number" id="current" placeholder="Enter Current (A)">
+                
+                <label for="resistance">Resistance (R):</label>
+                <input type="number" id="resistance" placeholder="Enter Resistance (Ω)">
+                
+                <button type="button" onclick="calculateOhmsLaw()">Calculate</button>
+            </form>
+            <div id="result">
+                <p id="result-text"></p>
+            </div>
+        </div>
+
+        <div class="simulation-card">
+            <h2>Interactive Circuit</h2>
+            <p>Click below to view an interactive simple circuit diagram that helps visualize how Voltage, Current, and Resistance are related:</p>
+            <button onclick="viewCircuit()">View Circuit</button>
+            <div id="circuit-container" style="display: none;">
+                <h3>Simple Circuit:</h3>
+                <svg width="300" height="200">
+                    <!-- Simple Circuit SVG -->
+                    <circle cx="50" cy="100" r="30" fill="yellow" stroke="black" stroke-width="2" />
+                    <text x="35" y="105" font-family="Arial" font-size="14" fill="black">Battery</text>
+
+                    <rect x="90" y="80" width="120" height="40" fill="lightgray" stroke="black" stroke-width="2"/>
+                    <text x="150" y="105" font-family="Arial" font-size="14" fill="black">Resistor</text>
+
+                    <line x1="50" y1="100" x2="90" y2="100" stroke="black" stroke-width="2" />
+                    <line x1="210" y1="100" x2="250" y2="100" stroke="black" stroke-width="2" />
+                    <line x1="250" y1="100" x2="250" y2="50" stroke="black" stroke-width="2" />
+                    <line x1="250" y1="50" x2="50" y2="50" stroke="black" stroke-width="2" />
+                    <line x1="50" y1="50" x2="50" y2="100" stroke="black" stroke-width="2" />
+                </svg>
+                <p>The circuit consists of a battery and a resistor. The current flows through the circuit based on Ohm’s Law.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateOhmsLaw() {
+    let voltage = document.getElementById('voltage').value;
+    let current = document.getElementById('current').value;
+    let resistance = document.getElementById('resistance').value;
+
+    if (voltage === "" && current !== "" && resistance !== "") {
+        voltage = current * resistance;
+        document.getElementById('result-text').innerText = `Calculated Voltage: ${voltage} V`;
+    } else if (current === "" && voltage !== "" && resistance !== "") {
+        current = voltage / resistance;
+        document.getElementById('result-text').innerText = `Calculated Current: ${current} A`;
+    } else if (resistance === "" && voltage !== "" && current !== "") {
+        resistance = voltage / current;
+        document.getElementById('result-text').innerText = `Calculated Resistance: ${resistance} Ω`;
+    } else {
+        document.getElementById('result-text').innerText = "Please enter any two values to calculate the third one.";
+    }
+}
+
+function viewCircuit() {
+    const circuitContainer = document.getElementById('circuit-container');
+    circuitContainer.style.display = 'block';  // Show the circuit diagram
+}
+
+    </script>
+</body>
+</html>

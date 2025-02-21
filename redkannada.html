@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ವಿಜ್ಞಾನ ಸಿಮ್ಯುಲೇಷನ್‌ಗಳು</title>
+    <link rel="stylesheet" type="text/css" href="green.css">
+    <style>
+        body {
+            background-image: url(orange.webp);
+            width: auto;
+           
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="language-toggle">
+        <button onclick="changeLanguage('en')">English</button>
+        <button onclick="changeLanguage('kn')">ಕನ್ನಡ</button>
+    </div>
+
+    <div class="header" id="header-text">
+        <b>ಪರಸ್ಪರ ಕ್ರಿಯಾತ್ಮಕ ವಿಜ್ಞಾನ ಸಿಮ್ಯುಲೇಷನ್‌ಗಳು</b>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-image">
+                <img src="physics.jpg" alt="ಭೌತಶಾಸ್ತ್ರ">
+            </div>
+
+            <div class="content" id="physics-content">
+                <button><a href="eye.html">ಮಾನವ ಕಣ್ಣು ದೃಷ್ಟಿ</a></button>
+                <button><a href="gravity.html">ನ್ಯೂಟನ್‌ನ ಚಲನದ ನಿಯಮಗಳು</a></button>
+                <button><a href="renew.html">ಪುನರುಜ್ಜೀವನ ಮತ್ತು ಅಪುನೇನ್ಯ ಸಂಪತ್ತುಗಳು</a></button>
+                <button><a href="electricity.html">ವಿದ್ಯುತ್</a></button>
+                <button><a href="light.html">ಬೆಳಕು</a></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image">
+                <img src="chemistry.jpg" alt="ರಸಾಯನಶಾಸ್ತ್ರ">
+            </div>
+
+            <div class="content" id="chemistry-content">
+                <button><a href="acidbase.html">ಅಮ್ಲಗಳು ಮತ್ತು ಕ್ಷಾರಗಳು</a></button>
+                <button><a href="reaction.html">ರಾಸಾಯನಿಕ ಪ್ರತಿಕ್ರಿಯೆಗಳು</a></button>
+                <button><a href="metals.html">ಧಾತುಗಳು ಮತ್ತು ಅಧಾತುಗಳು</a></button>
+                <button><a href="kanreactivity.html">ಧಾತುಗಳ ಪ್ರತಿಕ್ರಿಯಾತ್ಮಕತೆ</a></button>
+                <button><a href="period.html">ಮೂಲಕಗಳ ಅವಧಿ ವರ್ಗೀಕರಣ</a></button>
+                <button><a href="states.html">ಪದಾರ್ಥದ ಸ್ಥಿತಿಗಳು</a></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeLanguage(lang) {
+            if (lang === 'en') {
+                document.getElementById("header-text").innerHTML = "<b>INTERACTIVE SCIENCE SIMULATIONS</b>";
+
+                document.getElementById("physics-content").innerHTML = `
+                    <button><a href="eye.html">Human Eye Vision</a></button>
+                    <button><a href="gravity.html">Newton's Laws of Motion</a></button>
+                    <button><a href="renew.html">Renewable and Non-Renewable Resources</a></button>
+                    <button><a href="electricity.html">Electricity</a></button>
+                    <button><a href="light.html">Light</a></button>
+                `;
+
+                document.getElementById("chemistry-content").innerHTML = `
+                    <button><a href="acidbase.html">Acids and Bases</a></button>
+                    <button><a href="reaction.html">Chemical Reactions</a></button>
+                    <button><a href="metals.html">Metals and Non-Metals</a></button>
+                    <button><a href="reactivity.html">Reactivity of Metals</a></button>
+                    <button><a href="period.html">Periodic Classification of Elements</a></button>
+                    <button><a href="states.html">States of Matter</a></button>
+                `;
+
+            } else if (lang === 'kn') {
+                document.getElementById("header-text").innerHTML = "<b>ಪರಸ್ಪರ ಕ್ರಿಯಾತ್ಮಕ ವಿಜ್ಞಾನ ಸಿಮ್ಯುಲೇಷನ್‌ಗಳು</b>";
+
+                document.getElementById("physics-content").innerHTML = `
+                    <button><a href="eye.html">ಮಾನವ ಕಣ್ಣು ದೃಷ್ಟಿ</a></button>
+                    <button><a href="gravity.html">ನ್ಯೂಟನ್‌ನ ಚಲನದ ನಿಯಮಗಳು</a></button>
+                    <button><a href="renew.html">ಪುನರುಜ್ಜೀವನ ಮತ್ತು ಅಪುನೇನ್ಯ ಸಂಪತ್ತುಗಳು</a></button>
+                    <button><a href="electricity.html">ವಿದ್ಯುತ್</a></button>
+                    <button><a href="light.html">ಬೆಳಕು</a></button>
+                `;
+
+                document.getElementById("chemistry-content").innerHTML = `
+                    <button><a href="acidbase.html">ಅಮ್ಲಗಳು ಮತ್ತು ಕ್ಷಾರಗಳು</a></button>
+                    <button><a href="reaction.html">ರಾಸಾಯನಿಕ ಪ್ರತಿಕ್ರಿಯೆಗಳು</a></button>
+                    <button><a href="metals.html">ಧಾತುಗಳು ಮತ್ತು ಅಧಾತುಗಳು</a></button>
+                    <button><a href="reactivity.html">ಧಾತುಗಳ ಪ್ರತಿಕ್ರಿಯಾತ್ಮಕತೆ</a></button>
+                    <button><a href="period.html">ಮೂಲಕಗಳ ಅವಧಿ ವರ್ಗೀಕರಣ</a></button>
+                    <button><a href="states.html">ಪದಾರ್ಥದ ಸ್ಥಿತಿಗಳು</a></button>
+                `;
+            }
+        }
+    </script>
+
+</body>
+</html>

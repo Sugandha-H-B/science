@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Light Simulation</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  margin: 0;
+  padding: 20px;
+  color: black;
+}
+
+.simulation-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+.simulation-sections {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.simulation-section {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 20px;
+  width: 48%;
+  margin-top: 50px;
+}
+
+canvas {
+  border: 2px solid #ccc;
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+  height: 300px;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+label, p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.info-section {
+  margin-top: 50px;
+  background-color: #f4f0f0;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+h3, h4 {
+  color:black;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="simulation-container">
+    <h1>Interactive Light Simulation</h1>
+
+    <!-- Section for Reflection and Refraction Simulations -->
+    
+      <!-- Information Section -->
+    <div class="info-section">
+      <h3>Reflection and Refraction</h3>
+      <h4>Laws of Reflection</h4>
+      <ul>
+        <li>The angle of incidence is equal to the angle of reflection.</li>
+        <li>The incident ray, the reflected ray, and the normal lie in the same plane.</li>
+      </ul>
+
+      <h4>Refraction and Snell’s Law</h4>
+      <ul>
+        <li>Refraction occurs when light passes from one medium to another and bends.</li>
+        <li>Snell’s Law: <em>n1 * sin(θ1) = n2 * sin(θ2)</em>, where <em>n1</em> and <em>n2</em> are the refractive indices of the two media, and <em>θ1</em> and <em>θ2</em> are the angles of incidence and refraction.</li>
+      </ul>
+
+      <h4>Dispersion of Light</h4>
+      <p>Dispersion occurs when light splits into its constituent colors (like in a rainbow) due to varying refraction angles for different wavelengths. The refractive index depends on the wavelength, causing the different colors to spread out.</p>
+
+      <h4>Total Internal Reflection</h4>
+      <p>Total Internal Reflection happens when light moves from a denser to a rarer medium at an angle greater than the critical angle, resulting in the light reflecting back into the denser medium instead of refracting.</p>
+    </div>
+    <div class="simulation-sections">
+
+      <!-- Reflection Simulation -->
+      <div class="simulation-section">
+        <h2>Reflection</h2>
+        <canvas id="reflectionCanvas" width="600" height="400"></canvas>
+        <label for="angleSliderReflection">Angle of Incidence:</label>
+        <input type="range" id="angleSliderReflection" min="0" max="90" value="30">
+        <p>Angle: <span id="angleValueReflection">30</span>°</p>
+      </div>
+
+      <!-- Refraction Simulation -->
+      <div class="simulation-section">
+        <h2>Refraction</h2>
+        <canvas id="refractionCanvas" width="600" height="400"></canvas>
+        <label for="angleSliderRefraction">Angle of Incidence:</label>
+        <input type="range" id="angleSliderRefraction" min="0" max="90" value="30">
+        <label for="indexSlider1">Refractive Index of Medium 1:</label>
+        <input type="range" id="indexSlider1" min="1" max="2" step="0.1" value="1.0">
+        <label for="indexSlider2">Refractive Index of Medium 2:</label>
+        <input type="range" id="indexSlider2" min="1" max="2" step="0.1" value="1.5">
+        <p>Angle: <span id="angleValueRefraction">30</span>°</p>
+        <p>Refractive Index of Medium 1: <span id="indexValue1">1.0</span></p>
+        <p>Refractive Index of Medium 2: <span id="indexValue2">1.5</span></p>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script>
+    const reflectionCanvas = document.getElementById('reflectionCanvas');
+const reflectionCtx = reflectionCanvas.getContext('2d');
+const angleSliderReflection = document.getElementById('angleSliderReflection');
+const angleValueReflection = document.getElementById('angleValueReflection');
+
+const refractionCanvas = document.getElementById('refractionCanvas');
+const refractionCtx = refractionCanvas.getContext('2d');
+const angleSliderRefraction = document.getElementById('angleSliderRefraction');
+const angleValueRefraction = document.getElementById('angleValueRefraction');
+const indexSlider1 = document.getElementById('indexSlider1');
+const indexSlider2 = document.getElementById('indexSlider2');
+const indexValue1 = document.getElementById('indexValue1');
+const indexValue2 = document.getElementById('indexValue2');
+
+// Initial values
+let angleReflection = angleSliderReflection.value;
+let angleRefraction = angleSliderRefraction.value;
+let n1 = indexSlider1.value;
+let n2 = indexSlider2.value;
+
+angleSliderReflection.addEventListener('input', () => {
+  angleReflection = angleSliderReflection.value;
+  angleValueReflection.textContent = angleReflection;
+  drawReflection();
+});
+
+angleSliderRefraction.addEventListener('input', () => {
+  angleRefraction = angleSliderRefraction.value;
+  angleValueRefraction.textContent = angleRefraction;
+  drawRefraction();
+});
+
+indexSlider1.addEventListener('input', () => {
+  n1 = indexSlider1.value;
+  indexValue1.textContent = n1;
+  drawRefraction();
+});
+
+indexSlider2.addEventListener('input', () => {
+  n2 = indexSlider2.value;
+  indexValue2.textContent = n2;
+  drawRefraction();
+});
+
+// Reflection Simulation
+function drawReflection() {
+  reflectionCtx.clearRect(0, 0, reflectionCanvas.width, reflectionCanvas.height);
+
+  const angleRad = angleReflection * (Math.PI / 180);
+  const incidentRayX = 200 * Math.cos(angleRad);
+  const incidentRayY = 200 * Math.sin(angleRad);
+
+  // Draw incident ray
+  reflectionCtx.beginPath();
+  reflectionCtx.moveTo(100, 100);
+  reflectionCtx.lineTo(100 + incidentRayX, 100 + incidentRayY);
+  reflectionCtx.stroke();
+
+  // Draw reflected ray
+  const reflectedRayX = 200 * Math.cos(-angleRad);
+  const reflectedRayY = 200 * Math.sin(-angleRad);
+  reflectionCtx.beginPath();
+  reflectionCtx.moveTo(100, 100);
+  reflectionCtx.lineTo(100 + reflectedRayX, 100 + reflectedRayY);
+  reflectionCtx.strokeStyle = 'red';
+  reflectionCtx.stroke();
+}
+
+drawReflection();
+
+// Refraction Simulation
+function drawRefraction() {
+  refractionCtx.clearRect(0, 0, refractionCanvas.width, refractionCanvas.height);
+
+  const angleIncidenceRad = angleRefraction * (Math.PI / 180);
+  const angleRefractionRad = Math.asin((n1 / n2) * Math.sin(angleIncidenceRad));
+
+  // Incident Ray
+  refractionCtx.beginPath();
+  refractionCtx.moveTo(100, 100);
+  refractionCtx.lineTo(100 + 200 * Math.cos(angleIncidenceRad), 100 + 200 * Math.sin(angleIncidenceRad));
+  refractionCtx.stroke();
+
+  // Refracted Ray
+  refractionCtx.beginPath();
+  refractionCtx.moveTo(100, 100);
+  refractionCtx.lineTo(100 + 200 * Math.cos(angleRefractionRad), 100 + 200 * Math.sin(angleRefractionRad));
+  refractionCtx.strokeStyle = 'green';
+  refractionCtx.stroke();
+}
+
+drawRefraction();
+
+  </script>
+</body>
+</html>

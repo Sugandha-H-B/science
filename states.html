@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>States of Matter: Basics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #d9ebfa, #cfcff5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #000000;
+    }
+
+    #description, #limitations {
+      max-width: 800px;
+      margin: 10px 0;
+      font-size: 16px;
+      color: #000000;
+      text-align: justify;
+    }
+
+    canvas {
+      border: 1px solid #141313;
+      background: #f5e2e2;
+      display: block;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .controls button,
+    .controls input[type="range"] {
+      padding: 10px;
+      font-size: 16px;
+      background: #3498db;
+      color: rgb(243, 227, 227);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover {
+      background: #2980b9;
+    }
+
+    .controls input[type="range"] {
+      width: 200px;
+    }
+
+    #phase-diagram {
+      margin-top: 20px;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    #phase-diagram img {
+      max-width: 100%;
+      border: 1px solid #000000;
+    }
+
+    #temperatureDisplay {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="header">States of Matter: Basics</h1>
+
+  <!-- Language Selection -->
+  <div>
+    <label for="languageSelect" id="languageLabel">Select Language: </label>
+    <select id="languageSelect" onchange="changeLanguage()">
+      <option value="english">English</option>
+      <option value="kannada">Kannada</option>
+    </select>
+  </div>
+
+  <div id="description">
+    <p id="explanation"><strong>Visual Representation:</strong> The simulation shows the motion and arrangement of particles in each state of matter:</p>
+    <ul id="statesList">
+      <li><strong>Solid:</strong> Particles vibrate in place in a fixed arrangement.</li>
+      <li><strong>Liquid:</strong> Particles move freely but remain close together.</li>
+      <li><strong>Gas:</strong> Particles move randomly and rapidly, spreading out in the container.</li>
+    </ul>
+  </div>
+
+  <canvas id="simulationCanvas" width="600" height="400"></canvas>
+
+  <div class="controls">
+    <button id="solidBtn" onclick="setState('solid')">Solid</button>
+    <button id="liquidBtn" onclick="setState('liquid')">Liquid</button>
+    <button id="gasBtn" onclick="setState('gas')">Gas</button>
+    <label>
+      <span id="temperatureLabel">Temperature:</span>
+      <input id="temperatureSlider" type="range" min="50" max="1000" value="273" step="1" oninput="updateTemperature()">
+    </label>
+  </div>
+
+
+
+  <div id="temperatureDisplay">
+    <p id="temperatureText">Temperature: <span id="tempValue">273 K</span></p>
+  </div>
+
+  <div id="limitations">
+    <h3 id="limitationsHeader">Limitations</h3>
+    <p id="limitationsText">This model is a simplified representation of the states of matter and their transitions. It does not account for latent heat, and it works best for studying equilibrium states.</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('simulationCanvas');
+    const ctx = canvas.getContext('2d');
+    const temperatureSlider = document.getElementById('temperatureSlider');
+    const tempValue = document.getElementById('tempValue');
+    const languageSelect = document.getElementById('languageSelect');
+
+    let particles = [];
+    let state = 'solid';
+    let temperature = 273; // Kelvin
+
+    function createParticles(count) {
+      particles = [];
+      let spacing = 20; // Default spacing between particles
+
+      // For solid state, use a grid structure with space between particles
+      if (state === 'solid') {
+        let cols = Math.floor(canvas.width / spacing);
+        let rows = Math.floor(canvas.height / spacing);
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            particles.push({
+              x: j * spacing,
+              y: i * spacing,
+              vx: 0,
+              vy: 0,
+              mass: 1,
+            });
+          }
+        }
+      } else {
+        // For liquid or gas states, randomly place particles
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: 0,
+            vy: 0,
+            mass: 1,
+          });
+        }
+      }
+    }
+
+    function updateParticles() {
+      const speedFactor = (temperature / 273) ** 0.5;
+
+      particles.forEach((p) => {
+        if (state === 'solid') {
+          // In solid state, increase vibration intensity as heat is added
+          const vibrationFactor = 0.5 + (temperature - 273) / 1000; // Increased vibration with temperature
+          p.vx = Math.random() * vibrationFactor - vibrationFactor / 2;
+          p.vy = Math.random() * vibrationFactor - vibrationFactor / 2;
+
+          // Simulate a slight vibration in a grid-like structure for solid state
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Transition to liquid state if temperature is high enough
+          if (temperature >= 373) {
+            setState('liquid');
+          }
+        } else if (state === 'liquid') {
+          // In liquid state, particles move more freely with increasing temperature
+          p.vx += (Math.random() - 0.5) * 0.1 * speedFactor;
+          p.vy += (Math.random() - 0.5) * 0.1 * speedFactor;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+          // Transition to gas state if temperature is high enough
+          if (temperature >= 473) {
+            setState('gas');
+          }
+        } else if (state === 'gas') {
+          // In gas state, particles move even faster with increasing temperature
+          p.vx += (Math.random() - 0.5) * 0.2 * speedFactor;
+          p.vy += (Math.random() - 0.5) * 0.2 * speedFactor;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        }
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = state === 'solid' ? '#1abc9c' : state === 'liquid' ? '#3498db' : '#e74c3c';
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+
+    function animate() {
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+
+    function setState(newState) {
+      state = newState;
+      if (state === 'solid') createParticles(100);
+      else if (state === 'liquid') createParticles(200);
+      else if (state === 'gas') createParticles(300);
+    }
+
+    function updateTemperature() {
+      temperature = parseInt(temperatureSlider.value);
+      tempValue.textContent = `${temperature} K`;
+    }
+
+    function changeLanguage() {
+      const language = languageSelect.value;
+
+      if (language === 'english') {
+        document.getElementById('header').textContent = 'States of Matter: Basics';
+        document.getElementById('languageLabel').textContent = 'Select Language:';
+        document.getElementById('explanation').innerHTML = `<strong>Visual Representation:</strong> The simulation shows the motion and arrangement of particles in each state of matter:`;
+        document.getElementById('statesList').innerHTML = `
+          <li><strong>Solid:</strong> Particles vibrate in place in a fixed arrangement.</li>
+          <li><strong>Liquid:</strong> Particles move freely but remain close together.</li>
+          <li><strong>Gas:</strong> Particles move randomly and rapidly, spreading out in the container.</li>
+        `;
+        document.getElementById('limitations').innerHTML = `<h3>Limitations</h3><p>This model is a simplified representation of the states of matter and their transitions. It does not account for latent heat, and it works best for studying equilibrium states.</p>`;
+        document.getElementById('phaseDiagramHeader').textContent = 'Simplified Phase Diagram';
+        document.getElementById('phaseDiagramNote').textContent = 'Note: The axes of this phase diagram are not scaled, and the marker remains on the coexistence line between liquid/gas or solid/gas.';
+        document.getElementById('temperatureLabel').textContent = 'Temperature:';
+        document.getElementById('limitationsHeader').textContent = 'Limitations';
+      } else if (language === 'kannada') {
+        document.getElementById('header').textContent = 'ವಸ್ತುಗಳ ಸ್ಥಿತಿಗಳು: ಮೂಲಭೂತಗಳು';
+        document.getElementById('languageLabel').textContent = 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ:';
+        document.getElementById('explanation').innerHTML = `<strong>ದೃಶ್ಯ ಪ್ರತಿನಿಧಿ:</strong> ಸಿಮ್ಯುಲೇಶನ್ ಪ್ರತಿಯೊಂದು ವಸ್ತು ಸ್ಥಿತಿಯಲ್ಲಿಯೂ ಕಣಗಳ ಚಲನೆ ಮತ್ತು ವ್ಯವಸ್ಥೆಯನ್ನು ತೋರಿಸುತ್ತದೆ:`;
+        document.getElementById('statesList').innerHTML = `
+          <li><strong>ಘನ:</strong> ಕಣಗಳು ಸ್ಥಿರವಾದ ವ್ಯವಸ್ಥೆಯಲ್ಲಿ ತಮ್ಮ ಸ್ಥಳದಲ್ಲಿ ಕಂಪಿಸುತ್ತವೆ.</li>
+          <li><strong>ದ್ರವ:</strong> ಕಣಗಳು ಸ್ವತಂತ್ರವಾಗಿ ಚಲಿಸುತ್ತಿವೆ ಆದರೆ ಸಮೀಪದಲ್ಲಿಯೇ ಇರುತ್ತವೆ.</li>
+          <li><strong>ವಾಯು:</strong> ಕಣಗಳು ಅನಿಯಮಿತವಾಗಿ ಮತ್ತು ವೇಗವಾಗಿ ಚಲಿಸುತ್ತವೆ.</li>
+        `;
+        document.getElementById('limitations').innerHTML = `<h3>ಪರಿಸರಗಳು</h3><p>ಈ ಮಾದರಿ ಸ್ಥಿತಿಗಳ ಪರಿವರ್ತನೆಗಳನ್ನು ಸರಳವಾದ ರೂಪದಲ್ಲಿ ಪ್ರತಿನಿಧಿಸುತ್ತದೆ. ಇದು ಹಿಂಜರಿಯಲಾದ ತಾಪಮಾನವನ್ನು ಮತ್ತು ಸಮತೋಲಿತ ಸ್ಥಿತಿಗಳ ಅಧ್ಯಯನವನ್ನು ಅತ್ಯುತ್ತಮವಾಗಿ ಕಾರ್ಯಗತಗೊಳಿಸುತ್ತದೆ.</p>`;
+        document.getElementById('phaseDiagramHeader').textContent = 'ಸರಳ ಫೇಸ್ ಡಯಗ್ರಾಂ';
+        document.getElementById('phaseDiagramNote').textContent = 'ಟಿಪ್ಪಣಿ: ಈ ಹಂತದ ಡಯಗ್ರಾಂದ ಅಕ್ಷಗಳು ಮಾಪನಗೊಳಿಸಲ್ಪಟ್ಟಿಲ್ಲ, ಮತ್ತು ಗುರುತು ಸಾಂಯೋಜಿತ ಸಾಲಿನಲ್ಲಿ ಉಳಿದಿದೆ.';
+        document.getElementById('temperatureLabel').textContent = 'ತಾಪಮಾನ:';
+        document.getElementById('limitationsHeader').textContent = 'ಪರಿಸರಗಳು';
+      }
+    }
+
+    animate(); // Start animation
+  </script>
+</body>
+</html>
