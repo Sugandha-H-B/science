@@ -8,27 +8,31 @@
 </head>
 <body>
     <div id="container">
-        <h1>Types of Chemical Reactions</h1>
-        <p>Select a reaction type and explore interactive examples!</p>
+        <div class="language-toggle">
+            <button onclick="changeLanguage('en')">English</button>
+            <button onclick="changeLanguage('kn')">ಕನ್ನಡ</button>
+        </div>
+
+        <h1 id="title">Types of Chemical Reactions</h1>
+        <p id="description">Select a reaction type and explore interactive examples!</p>
 
         <div id="reaction-types">
-            <button onclick="showReaction('combination')">Combination Reaction</button>
-            <button onclick="showReaction('decomposition')">Decomposition Reaction</button>
-            <button onclick="showReaction('displacement')">Displacement Reaction</button>
-            <button onclick="showReaction('neutralization')">Neutralization Reaction</button>
-            <button onclick="showReaction('doubleDisplacement')">Double Displacement Reaction</button>
-            <button onclick="showReaction('oxidationReduction')">Oxidation-Reduction Reaction</button>
+            <button onclick="showReaction('combination')" id="combination-btn">Combination Reaction</button>
+            <button onclick="showReaction('decomposition')" id="decomposition-btn">Decomposition Reaction</button>
+            <button onclick="showReaction('displacement')" id="displacement-btn">Displacement Reaction</button>
+            <button onclick="showReaction('neutralization')" id="neutralization-btn">Neutralization Reaction</button>
+            <button onclick="showReaction('doubleDisplacement')" id="doubleDisplacement-btn">Double Displacement Reaction</button>
+            <button onclick="showReaction('oxidationReduction')" id="oxidationReduction-btn">Oxidation-Reduction Reaction</button>
         </div>
         
-
         <div id="reaction-container">
             <h2 id="reaction-title"></h2>
             <p id="reaction-description"></p>
 
             <div id="controls">
-                <label for="reactant1">Select Reactant 1:</label>
+                <label for="reactant1" id="reactant1-label">Select Reactant 1:</label>
                 <select id="reactant1" onchange="updateReactants()"></select>
-                <label for="reactant2">Select Reactant 2:</label>
+                <label for="reactant2" id="reactant2-label">Select Reactant 2:</label>
                 <select id="reactant2" onchange="updateReactants()"></select>
             </div>
 
@@ -51,6 +55,33 @@
     </div>
 
     <script>
+        function changeLanguage(lang) {
+            if (lang === 'en') {
+                document.getElementById("title").innerText = "Types of Chemical Reactions";
+                document.getElementById("description").innerText = "Select a reaction type and explore interactive examples!";
+                document.getElementById("combination-btn").innerText = "Combination Reaction";
+                document.getElementById("decomposition-btn").innerText = "Decomposition Reaction";
+                document.getElementById("displacement-btn").innerText = "Displacement Reaction";
+                document.getElementById("neutralization-btn").innerText = "Neutralization Reaction";
+                document.getElementById("doubleDisplacement-btn").innerText = "Double Displacement Reaction";
+                document.getElementById("oxidationReduction-btn").innerText = "Oxidation-Reduction Reaction";
+                document.getElementById("reactant1-label").innerText = "Select Reactant 1:";
+                document.getElementById("reactant2-label").innerText = "Select Reactant 2:";
+            } else {
+                document.getElementById("title").innerText = "ರಾಸಾಯನಿಕ ಪ್ರತಿಕ್ರಿಯೆಗಳ ಪ್ರಕಾರಗಳು";
+                document.getElementById("description").innerText = "ಒಂದು ಪ್ರತಿಕ್ರಿಯೆ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ಪರಸ್ಪರ ಕ್ರಿಯಾತ್ಮಕ ಉದಾಹರಣೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ!";
+                document.getElementById("combination-btn").innerText = "ಸಂಯುಕ್ತ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("decomposition-btn").innerText = "ವಿಘಟನ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("displacement-btn").innerText = "ಸ್ಥಳಾಂತರ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("neutralization-btn").innerText = "ನ್ಯೂಟ್ರಲೈಝೇಶನ್ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("doubleDisplacement-btn").innerText = "ದ್ವಿಗುಣ ಸ್ಥಳಾಂತರ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("oxidationReduction-btn").innerText = "ಆಕ್ಸಿಡೇಶನ್-ರಿಡಕ್ಷನ್ ಪ್ರತಿಕ್ರಿಯೆ";
+                document.getElementById("reactant1-label").innerText = "ಪ್ರತಿಕ್ರಿಯಕ 1 ಆಯ್ಕೆಮಾಡಿ:";
+                document.getElementById("reactant2-label").innerText = "ಪ್ರತಿಕ್ರಿಯಕ 2 ಆಯ್ಕೆಮಾಡಿ:";
+            }
+        }
+
+
         const reactions = {
             combination: {
                 title: "Combination Reaction",
